@@ -12,21 +12,8 @@ export const metadata: Metadata = {
   description: 'A front-end prototype for a premium dental clinic landing page focused on smile consultations. Modern dental care for your best smile.',
   keywords: ['dental', 'dentist', 'Singapore', 'smile consultation', 'teeth whitening', 'veneers'],
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/my-icon.png',
+    apple: '/my-icon.png',
   },
   openGraph: {
     title: 'Luma Dental Studio | Modern Dental Care in Singapore',
