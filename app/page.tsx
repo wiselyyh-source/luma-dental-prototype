@@ -1442,7 +1442,7 @@ export default function LumaDentalStudio() {
                 </div>
                 <div className="flex items-center gap-2.5 text-slate-400">
                   <Phone className="w-4.5 h-4.5 text-primary flex-shrink-0" />
-                  <span>+65 6123 4567</span>
+                  <span>+65 9480 0366</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-slate-400">
                   <Mail className="w-4.5 h-4.5 text-primary flex-shrink-0" />
@@ -1485,7 +1485,7 @@ export default function LumaDentalStudio() {
 
       {/* Floating WhatsApp Button */}
       <a
-        href="https://wa.me/6591234567?text=Hi%20Luma%20Dental%20Studio%2C%20I%20would%20like%20to%20book%20a%20smile%20consultation."
+        href="https://wa.me/6594800366?text=Hi%20Luma%20Dental%20Studio%2C%20I%20would%20like%20to%20book%20a%20smile%20consultation."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-4 py-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 font-semibold text-sm border border-emerald-400/20"
