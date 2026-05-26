@@ -139,6 +139,57 @@ const serviceDetailsMap: Record<string, {
   }
 }
 
+const serviceModalDetailsMap: Record<string, {
+  overview: string;
+  idealFor: string;
+  expect: string;
+  timeline: string;
+  aftercare: string;
+}> = {
+  whitening: {
+    overview: "A professional in-clinic whitening procedure using concentrated whitening gels and specialized light activation to safely lift deep stains.",
+    idealFor: "Discolored or yellowed teeth due to coffee, tea, food, tobacco, or natural aging, where regular scaling and polishing cannot remove the stains.",
+    expect: "Gums are isolated with a barrier gel, then the whitening agent is applied to teeth and activated with a specialized blue LED light. Done in three 15-minute cycles.",
+    timeline: "1 visit of about 60–75 minutes.",
+    aftercare: "Avoid highly colored food/drinks (coffee, red wine, curry) for 48 hours. Mild, temporary sensitivity is normal and resolves in 1–2 days."
+  },
+  veneers: {
+    overview: "Thin, custom-crafted porcelain or composite shells bonded to the front of teeth to improve shape, alignment, or color.",
+    idealFor: "Chipped, worn, spaced, or severely stained teeth that do not respond to whitening, providing a long-term cosmetic restoration.",
+    expect: "Collaborative smile planning with digital previews. Teeth are minimally prepped, temporary veneers are placed, and custom porcelain shells are bonded.",
+    timeline: "2 to 3 visits over 2 weeks.",
+    aftercare: "Brush and floss daily as normal. Avoid biting directly into very hard foods (like ice or hard candy) to prevent chips."
+  },
+  aligners: {
+    overview: "A modern orthodontic treatment using a sequence of custom-made, clear, removable trays to gradually align teeth into their desired positions.",
+    idealFor: "Patients with mild to moderate crowding, spacing, or minor bite issues who prefer a discreet, metal-free alternative to traditional braces.",
+    expect: "3D digital scan of your teeth to simulate movement. You will receive sets of custom aligners to wear for 20–22 hours daily, changing them every 1–2 weeks.",
+    timeline: "6 to 18 months, with short check-up visits every 6–8 weeks.",
+    aftercare: "Clean trays daily. Wear a retainer nightly after treatment completion to maintain alignment."
+  },
+  "general-dentistry": {
+    overview: "Core restorative treatments including tooth-colored fillings, crown restorations, root canals, or extractions to address decay or structural damage.",
+    idealFor: "Patients experiencing localized toothache, sensitivity, cavities, or fractured tooth structure requiring conservative restoration.",
+    expect: "A clinical exam and digital X-rays to locate the issue. Local anesthesia is administered for comfort, followed by decay removal and filling placement.",
+    timeline: "Most fillings take 1 visit of 30–60 minutes. Crowns require 2 visits.",
+    aftercare: "Sensitivity to hot and cold may persist for a few days. Maintain routine brushing and flossing around the restoration."
+  },
+  implants: {
+    overview: "A premium, permanent replacement for a missing tooth, comprising a titanium implant post that acts as a root, and a custom porcelain crown.",
+    idealFor: "Adults with one or more missing teeth who have adequate jawbone density and healthy gums to support the implant.",
+    expect: "Detailed 3D CT scan and surgical planning. The implant is placed under local anesthesia, followed by a healing phase (osseointegration), and finally the crown placement.",
+    timeline: "3 to 6 months total, across 3–4 planning and placement visits.",
+    aftercare: "Treat the implant like a natural tooth with regular brushing, flossing, and twice-yearly clinical checkups."
+  },
+  cleaning: {
+    overview: "Professional preventative care involving scaling to remove plaque and tartar, polishing to remove surface stains, and a clinical exam.",
+    idealFor: "All patients. Recommended every 6 months to prevent gum disease, tooth decay, and to detect any potential oral health issues early.",
+    expect: "The dentist uses ultrasonic instruments to gently remove plaque and hard tartar from above and below the gumline, followed by airflow stain removal.",
+    timeline: "1 visit of 30–45 minutes.",
+    aftercare: "Resume normal brushing and flossing. Mild gum tenderness for a few hours is normal if heavy tartar was removed."
+  }
+}
+
 // Custom minimal dental-style SVG icons for patient concerns
 const OverbiteIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -234,19 +285,19 @@ const ToothPainIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 const testimonials = [
   {
-    name: "Sarah L.",
-    treatment: "Teeth Whitening",
-    quote: "I was nervous about whitening, but the team made me feel so comfortable. My teeth are 6 shades brighter and I can't stop smiling!",
+    name: "Example Patient A",
+    treatment: "Teeth Whitening Focus",
+    quote: "Placeholder review text: The patient described their professional teeth whitening treatment as comfortable and straightforward. All steps were clearly explained beforehand.",
   },
   {
-    name: "Michael T.",
-    treatment: "Veneers",
-    quote: "After years of hiding my teeth, I finally have a smile I'm proud of. The veneers look completely natural.",
+    name: "Example Patient B",
+    treatment: "Smile Design Focus",
+    quote: "Placeholder review text: The patient highlighted their smile design consultation, noting the detailed planning, digital scanner preview, and gentle approach.",
   },
   {
-    name: "Amanda C.",
-    treatment: "Invisible Aligners",
-    quote: "I never thought I'd straighten my teeth as an adult. The clear aligners were so discreet &mdash; most people didn't even notice!",
+    name: "Example Patient C",
+    treatment: "Invisible Aligners Focus",
+    quote: "Placeholder review text: The patient described their invisible aligner journey as easy to follow, with clean tray changes and regular check-in schedules.",
   },
 ]
 
@@ -259,6 +310,8 @@ export default function LumaDentalStudio() {
   const [showBackToTop, setShowBackToTop] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [isHoveringTestimonials, setIsHoveringTestimonials] = useState(false)
+  const [activeService, setActiveService] = useState("whitening")
+  const activeServiceDetails = serviceDetailsMap[activeService]
 
   // Handle scroll for back to top button
   useEffect(() => {
@@ -476,25 +529,28 @@ export default function LumaDentalStudio() {
               className="bg-white/60 backdrop-blur-md border border-cyan-100/60 rounded-2xl p-6 lg:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 divide-y lg:divide-y-0 lg:divide-x divide-cyan-100/50"
             >
               {[
-                { icon: Award, label: "MDA Certified", sublabel: "Licensed Clinic" },
-                { icon: Shield, label: "Safe & Sterile", sublabel: "COVID-19 Protocols" },
+                { icon: Award, label: "MOH Licensed Clinic", sublabel: "Registered Practice" },
+                { icon: Shield, label: "Safe & Sterile", sublabel: "Advanced Sterilization" },
                 { icon: MapPin, label: "Orchard Road", sublabel: "Central Clinic" },
                 { icon: Heart, label: "0% Interest", sublabel: "Flexible Installments" },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  className="flex items-center gap-4 justify-center pt-4 lg:pt-0 first:pt-0 lg:first:pl-0 lg:pl-6 border-cyan-100/50"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground tracking-wide">{item.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{item.sublabel}</p>
-                  </div>
-                </motion.div>
-              ))}
+              ].map((item, index) => {
+                const ItemIcon = item.icon
+                return (
+                  <motion.div
+                    key={index}
+                    variants={fadeInUp}
+                    className="flex items-center gap-4 justify-center pt-4 lg:pt-0 first:pt-0 lg:first:pl-0 lg:pl-6 border-cyan-100/50"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center flex-shrink-0">
+                      <ItemIcon className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground tracking-wide">{item.label}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{item.sublabel}</p>
+                    </div>
+                  </motion.div>
+                )
+              })}
             </motion.div>
           </div>
         </section>
@@ -608,23 +664,26 @@ export default function LumaDentalStudio() {
                   icon: ToothPainIcon,
                   description: "Discomfort when chewing, drinking, or brushing."
                 }
-              ].map((concern, idx) => (
-                <motion.div
-                  key={idx}
-                  variants={fadeInUp}
-                  className="bg-white border border-slate-200/60 rounded-3xl p-5 shadow-[0_4px_18px_rgba(8,145,178,0.015)] hover:shadow-[0_12px_30px_rgba(8,145,178,0.05)] hover:-translate-y-1 hover:border-cyan-200/60 transition-all duration-300 group flex flex-col items-start"
-                >
-                  <div className="w-14 h-14 rounded-full bg-cyan-50/50 border border-cyan-100/30 flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-cyan-50 group-hover:border-cyan-200/50">
-                    <concern.icon className="w-9 h-9 text-cyan-600" />
-                  </div>
-                  <h3 className="font-serif font-bold text-slate-900 text-sm mb-1">
-                    {concern.title}
-                  </h3>
-                  <p className="text-[11px] text-muted-foreground leading-relaxed text-pretty">
-                    {concern.description}
-                  </p>
-                </motion.div>
-              ))}
+              ].map((concern, idx) => {
+                const ConcernIcon = concern.icon
+                return (
+                  <motion.div
+                    key={idx}
+                    variants={fadeInUp}
+                    className="bg-white border border-slate-200/60 rounded-3xl p-5 shadow-[0_4px_18px_rgba(8,145,178,0.015)] hover:shadow-[0_12px_30px_rgba(8,145,178,0.05)] hover:-translate-y-1 hover:border-cyan-200/60 transition-all duration-300 group flex flex-col items-start"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-cyan-50/50 border border-cyan-100/30 flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-cyan-50 group-hover:border-cyan-200/50">
+                      <ConcernIcon className="w-9 h-9 text-cyan-600" />
+                    </div>
+                    <h3 className="font-serif font-bold text-slate-900 text-sm mb-1">
+                      {concern.title}
+                    </h3>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed text-pretty">
+                      {concern.description}
+                    </p>
+                  </motion.div>
+                )
+              })}
             </motion.div>
 
             {/* Section CTA */}
@@ -656,7 +715,7 @@ export default function LumaDentalStudio() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeInUp}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
               <h2 className="text-3xl lg:text-4xl font-serif font-semibold text-foreground">
                 Our Dental Services
@@ -665,83 +724,160 @@ export default function LumaDentalStudio() {
                 Comprehensive and modern dental care options tailored to your individual health and aesthetic goals.
               </p>
             </motion.div>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={staggerContainer}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-            >
-              {[
-                {
-                  icon: Sparkles,
-                  title: "Teeth Whitening",
-                  value: "whitening",
-                  description:
-                    "Safe, professional whitening treatments that lift deep stains and brighten your smile by several shades in a single visit.",
-                },
-                {
-                  icon: Smile,
-                  title: "Veneers & Smile Design",
-                  value: "veneers",
-                  description:
-                    "Custom-designed porcelain or composite veneers crafted to reshape, align, and restore your teeth for a natural-looking transformation.",
-                },
-                {
-                  icon: Shield,
-                  title: "Invisible Aligners",
-                  value: "aligners",
-                  description:
-                    "Modern, clear aligner systems that gently straighten teeth over time, offering a comfortable, discreet alternative to traditional braces.",
-                },
-                {
-                  icon: Heart,
-                  title: "General Dentistry",
-                  value: "general-dentistry",
-                  description:
-                    "Essential oral healthcare, including tooth-colored fillings, wisdom tooth extractions, and root canal therapy to keep your teeth healthy.",
-                },
-                {
-                  icon: Award,
-                  title: "Dental Implants",
-                  value: "implants",
-                  description:
-                    "Permanent restorative solutions for missing teeth, utilizing premium titanium posts and lifelike custom crowns to restore function and bite.",
-                },
-                {
-                  icon: Calendar,
-                  title: "Dental Cleaning & Checkups",
-                  value: "cleaning",
-                  description:
-                    "Routine scaling, polishing, and comprehensive dental examinations to prevent decay, manage gum health, and maintain optimal hygiene.",
-                },
-              ].map((treatment, index) => (
-                <motion.div key={index} variants={fadeInUp} className="h-full">
-                  <Card
-                    onClick={() => setSelectedServiceDetail(treatment.value)}
-                    className="h-full flex flex-col bg-slate-50/60 border border-slate-200/30 rounded-3xl hover:bg-white hover:shadow-[0_20px_40px_rgba(8,145,178,0.06)] hover:-translate-y-1.5 transition-all duration-300 group hover:border-cyan-200/60 cursor-pointer"
-                  >
-                    <CardContent className="p-8 flex flex-col justify-between flex-1">
+
+            {/* Split Panel Layout */}
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              {/* Left Side: Services List Menu */}
+              <div className="lg:col-span-5 space-y-3">
+                {[
+                  {
+                    icon: Sparkles,
+                    title: "Teeth Whitening",
+                    value: "whitening",
+                    subtitle: "Fast, professional stain removal"
+                  },
+                  {
+                    icon: Smile,
+                    title: "Veneers & Smile Design",
+                    value: "veneers",
+                    subtitle: "Complete aesthetic transformations"
+                  },
+                  {
+                    icon: Shield,
+                    title: "Invisible Aligners",
+                    value: "aligners",
+                    subtitle: "Discreet clear orthodontic trays"
+                  },
+                  {
+                    icon: Heart,
+                    title: "General Dentistry",
+                    value: "general-dentistry",
+                    subtitle: "Essential restoration & health care"
+                  },
+                  {
+                    icon: Award,
+                    title: "Dental Implants",
+                    value: "implants",
+                    subtitle: "Durable, natural tooth replacements"
+                  },
+                  {
+                    icon: Calendar,
+                    title: "Dental Cleaning & Checkups",
+                    value: "cleaning",
+                    subtitle: "Routine prevention & maintenance"
+                  }
+                ].map((service) => {
+                  const isActive = activeService === service.value
+                  const IconComp = service.icon
+                  return (
+                    <button
+                      key={service.value}
+                      onClick={() => setActiveService(service.value)}
+                      onMouseEnter={() => setActiveService(service.value)}
+                      className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 flex items-center gap-4 group cursor-pointer ${
+                        isActive
+                          ? "bg-cyan-50/60 border-cyan-200/80 shadow-[0_4px_20px_rgba(8,145,178,0.03)]"
+                          : "bg-transparent border-transparent hover:bg-slate-50 hover:border-slate-200/50"
+                      }`}
+                    >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        isActive
+                          ? "bg-primary text-white"
+                          : "bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700"
+                      }`}>
+                        <IconComp className="w-5 h-5 stroke-[2.5]" />
+                      </div>
                       <div>
-                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/15 to-teal-500/15 border border-cyan-500/20 flex items-center justify-center mb-6 group-hover:from-primary group-hover:to-accent transition-all duration-300 shadow-[0_4px_12px_rgba(8,145,178,0.06)]">
-                          <treatment.icon className="w-7 h-7 text-primary group-hover:text-white transition-colors duration-300 stroke-[2.5]" />
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-900 mb-3 tracking-wide">
-                          {treatment.title}
+                        <h3 className={`font-semibold text-base transition-colors ${
+                          isActive ? "text-primary" : "text-slate-900"
+                        }`}>
+                          {service.title}
                         </h3>
-                        <p className="text-body text-sm leading-relaxed">
-                          {treatment.description}
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {service.subtitle}
                         </p>
                       </div>
-                      <div className="mt-6 flex items-center gap-1.5 text-xs font-semibold text-primary/80 group-hover:text-primary transition-colors">
-                        <span>Learn More</span>
-                        <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Right Side: Featured Service Detail Panel */}
+              <div className="lg:col-span-7 h-full">
+                <AnimatePresence mode="wait">
+                  {activeServiceDetails && (
+                    <motion.div
+                      key={activeService}
+                      initial={{ opacity: 0, x: 15 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -15 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      className="bg-slate-50/50 border border-slate-200/40 rounded-3xl p-8 lg:p-10 flex flex-col justify-between h-full min-h-[480px] shadow-[0_8px_30px_rgba(0,0,0,0.015)] relative overflow-hidden"
+                    >
+                      {/* Soft visual watermark/background icon */}
+                      <div className="absolute top-8 right-8 text-cyan-500/5 pointer-events-none select-none">
+                        <Sparkles className="w-32 h-32" />
                       </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
+
+                      <div className="relative z-10">
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          <span className="text-[10px] font-bold text-primary uppercase tracking-widest bg-cyan-50 border border-cyan-100/50 px-3 py-1 rounded-full">
+                            {activeServiceDetails.type}
+                          </span>
+                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-slate-100 border border-slate-200/50 px-3 py-1 rounded-full">
+                            {activeServiceDetails.time}
+                          </span>
+                        </div>
+
+                        <h3 className="text-2xl lg:text-3xl font-serif font-semibold text-slate-900 mb-4 text-balance">
+                          {activeServiceDetails.title}
+                        </h3>
+
+                        <p className="text-body text-base leading-relaxed mb-6">
+                          {activeServiceDetails.description}
+                        </p>
+
+                        <div className="border-t border-slate-200/60 pt-6 mt-6 space-y-5">
+                          <div>
+                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                              Ideal For
+                            </h4>
+                            <p className="text-sm text-body leading-relaxed">
+                              {activeServiceDetails.suitableFor}
+                            </p>
+                          </div>
+                          <div>
+                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                              What to Expect
+                            </h4>
+                            <p className="text-sm text-body leading-relaxed">
+                              {activeServiceDetails.whatToExpect}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* CTA Row */}
+                      <div className="mt-8 pt-6 border-t border-slate-200/60 flex flex-col sm:flex-row gap-3 relative z-10">
+                        <Button
+                          onClick={() => openBookingModal(activeService)}
+                          className="bg-primary hover:bg-[#0E7490] text-primary-foreground h-12 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 flex-1"
+                        >
+                          Book a Smile Consultation
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          onClick={() => setSelectedServiceDetail(activeService)}
+                          className="text-slate-600 hover:text-primary hover:bg-slate-100/80 border border-slate-200 h-12 px-6 rounded-xl font-semibold transition-all"
+                        >
+                          View Treatment Details
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -794,18 +930,21 @@ export default function LumaDentalStudio() {
                   title: "Begin Your Smile Care",
                   description: "Start your treatment with a plan you understand and feel comfortable with.",
                 },
-              ].map((step, index) => (
-                <motion.div key={index} variants={fadeInUp} className="text-center relative bg-white/70 backdrop-blur-md border border-cyan-100/60 rounded-2xl p-6 shadow-[0_8px_20px_rgba(8,145,178,0.03)] transition-all duration-300 hover:shadow-md hover:border-cyan-100/80 group">
-                  <div className="absolute top-4 right-4 font-serif font-bold text-3xl text-cyan-200/70 group-hover:text-primary/30 transition-colors duration-300">
-                    {step.step}
-                  </div>
-                  <div className="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-100/50 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300 text-primary">
-                    <step.icon className="w-7 h-7 stroke-[2.5]" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{step.title}</h3>
-                  <p className="text-body text-sm leading-relaxed">{step.description}</p>
-                </motion.div>
-              ))}
+              ].map((step, index) => {
+                const StepIcon = step.icon
+                return (
+                  <motion.div key={index} variants={fadeInUp} className="text-center relative bg-white/70 backdrop-blur-md border border-cyan-100/60 rounded-2xl p-6 shadow-[0_8px_20px_rgba(8,145,178,0.03)] transition-all duration-300 hover:shadow-md hover:border-cyan-100/80 group">
+                    <div className="absolute top-4 right-4 font-serif font-bold text-3xl text-cyan-200/70 group-hover:text-primary/30 transition-colors duration-300">
+                      {step.step}
+                    </div>
+                    <div className="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-100/50 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300 text-primary">
+                      <StepIcon className="w-7 h-7 stroke-[2.5]" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{step.title}</h3>
+                    <p className="text-body text-sm leading-relaxed">{step.description}</p>
+                  </motion.div>
+                )
+              })}
             </motion.div>
             {/* CTA Button (After Steps) */}
             <motion.div
@@ -918,7 +1057,7 @@ export default function LumaDentalStudio() {
               {[
                 {
                   name: "Dr. Maya Tan",
-                  role: "Smile Design Specialist",
+                  role: "Aesthetic Dentistry & Aligners",
                   specialty: "Invisalign & Smile Design",
                   initials: "MT",
                   bio: "Helps patients explore discreet alignment and smile design options.",
@@ -981,7 +1120,7 @@ export default function LumaDentalStudio() {
 
 
 
-        {/* Testimonials */}
+        {/* Patient Experience Preview */}
         <section className="py-16 lg:py-24 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -992,10 +1131,10 @@ export default function LumaDentalStudio() {
               className="text-center mb-12"
             >
               <h2 className="text-3xl lg:text-4xl font-serif font-semibold text-foreground">
-                What Our Patients Say
+                Patient Experience Preview
               </h2>
               <p className="mt-4 text-lg text-body max-w-2xl mx-auto">
-                Real stories from real smiles.
+                Example review-style content shown for prototype purposes only.
               </p>
             </motion.div>
 
@@ -1071,14 +1210,25 @@ export default function LumaDentalStudio() {
                     key={index}
                     onClick={() => setActiveTestimonial(index)}
                     className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${activeTestimonial === index
-                        ? "bg-primary w-6"
-                        : "bg-slate-300 hover:bg-slate-400 w-2"
+                      ? "bg-primary w-6"
+                      : "bg-slate-300 hover:bg-slate-400 w-2"
                       }`}
                     aria-label={`Go to testimonial ${index + 1}`}
                   />
                 ))}
               </div>
             </div>
+
+            {/* Disclaimer Note */}
+            <motion.p
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="text-center text-xs text-muted-foreground mt-10 italic max-w-md mx-auto"
+            >
+              Placeholder review-style content for prototype demonstration. Final content should be replaced with clinic-approved, compliant trust or review content.
+            </motion.p>
           </div>
         </section>
 
@@ -1439,64 +1589,68 @@ export default function LumaDentalStudio() {
         <DialogContent className="sm:max-w-2xl rounded-3xl border border-cyan-100/50 bg-white/95 backdrop-blur-md p-6 sm:p-8">
           {selectedServiceDetail && (() => {
             const details = serviceDetailsMap[selectedServiceDetail];
-            if (!details) return null;
+            const modalDetails = serviceModalDetailsMap[selectedServiceDetail];
+            if (!details || !modalDetails) return null;
             return (
               <>
                 <DialogHeader className="text-left border-b border-border pb-4 mb-4">
                   <DialogTitle className="text-2xl sm:text-3xl font-serif font-bold text-foreground">
                     {details.title}
                   </DialogTitle>
-                  <DialogDescription className="text-body text-sm mt-1">
-                    {details.description}
+                  <DialogDescription className="sr-only">
+                    Detailed treatment information for {details.title}
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid md:grid-cols-5 gap-6 mt-4 text-left">
-                  {/* Left Column - Metadata Badges */}
-                  <div className="md:col-span-2 space-y-3">
-                    <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                        <Sparkles className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Category</h4>
-                        <p className="text-sm font-semibold text-foreground mt-0.5">{details.type}</p>
-                      </div>
-                    </div>
-                    <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                        <Clock className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Duration</h4>
-                        <p className="text-sm font-semibold text-foreground mt-0.5">{details.time}</p>
-                      </div>
-                    </div>
-                    <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                        <Smile className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ideal For</h4>
-                        <p className="text-sm font-semibold text-foreground mt-0.5 leading-snug">{details.suitableForShort}</p>
-                      </div>
-                    </div>
+
+                <div className="space-y-6 mt-4 text-left">
+                  {/* Highlighted Short Overview */}
+                  <div className="bg-cyan-50/40 border border-cyan-100/50 rounded-2xl p-5 shadow-xs">
+                    <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      Treatment Overview
+                    </h4>
+                    <p className="text-sm text-slate-800 leading-relaxed font-serif italic">
+                      {modalDetails.overview}
+                    </p>
                   </div>
 
-                  {/* Right Column - Deep-Dive Paragraphs */}
-                  <div className="md:col-span-3 space-y-5">
-                    <div>
-                      <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                        Who It Is Suitable For
-                      </h4>
-                      <p className="text-sm text-body leading-relaxed">{details.suitableFor}</p>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Left Column */}
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                          Ideal For
+                        </h4>
+                        <p className="text-sm text-body leading-relaxed">{modalDetails.idealFor}</p>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                          Typical Visit / Timeline
+                        </h4>
+                        <p className="text-sm text-body leading-relaxed">{modalDetails.timeline}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                        What To Expect
-                      </h4>
-                      <p className="text-sm text-body leading-relaxed">{details.whatToExpect}</p>
+
+                    {/* Right Column */}
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                          What To Expect
+                        </h4>
+                        <p className="text-sm text-body leading-relaxed">{modalDetails.expect}</p>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                          Aftercare & Next Steps
+                        </h4>
+                        <p className="text-sm text-body leading-relaxed">{modalDetails.aftercare}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
