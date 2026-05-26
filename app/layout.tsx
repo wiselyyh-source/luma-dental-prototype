@@ -29,6 +29,27 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  openGraph: {
+    title: 'Luma Dental Studio | Modern Dental Care in Singapore',
+    description: 'A front-end prototype for a premium dental clinic landing page focused on smile consultations. Modern dental care for your best smile.',
+    url: 'https://lumadental.sg',
+    siteName: 'Luma Dental Studio',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Luma Dental Studio - Modern Patient-First Dental Care',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Luma Dental Studio | Modern Dental Care in Singapore',
+    description: 'A front-end prototype for a premium dental clinic landing page focused on smile consultations. Modern dental care for your best smile.',
+    images: ['/og-image.png'],
+  },
 }
 
 export const viewport: Viewport = {
