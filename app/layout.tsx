@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: 'Luma Dental Studio',
     images: [
       {
-        url: '/og-image.png',
+        url: '/image.png',
         width: 1200,
         height: 630,
         alt: 'Luma Dental Studio - Modern Patient-First Dental Care',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Luma Dental Studio | Modern Dental Care in Singapore',
     description: 'A front-end prototype for a premium dental clinic landing page focused on smile consultations. Modern dental care for your best smile.',
-    images: ['/og-image.png'],
+    images: ['/image.png'],
   },
 }
 
